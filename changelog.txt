@@ -1,0 +1,6 @@
+V 0.3.0 2023-07-06 : - Add other security headers options : X-Frame-Options,X-Content-Type-Options
+V 0.2.1 2023-07-05 : - Add a size limit to the log to avoid memory errors
+                     - Add csp loger in prestashop module
+                     - Add an uninstaller
+V 0.2.0 2022-06-09 : Add logs view in admin and preview of generated csp
+V 0.1.0 2022-06-06 : Initial version of the module
