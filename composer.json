@@ -1,0 +1,32 @@
+{
+    "name": "nenes25/prestashop-hhscpheaders",
+    "description": "Manage Csp Headers in your prestashop instance",
+    "type": "prestashop-module",
+    "license": "OSL-3.0",
+    "authors": [
+        {
+            "name": "Herv\u00e9 HENNES",
+            "email": "contact@h-hennes.fr",
+            "homepage": "https://h-hennes.fr/blog/",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.2.0"
+    },
+    "config": {
+        "prepend-autoloader": false
+    },
+    "require-dev": {
+        "prestashop/php-dev-tools": "^4.3"
+    },
+    "scripts": {
+        "header-stamp": [
+            "vendor/bin/header-stamp --extensions=php,js,css,tpl --exclude=.github,vendor,tests,translations"
+        ],
+        "cs-fixer": [
+            "vendor/bin/php-cs-fixer fix --config tests/php/.php-cs-fixer.dist.php"
+        ]
+    },
+    "author": "PrestaShop"
+}
