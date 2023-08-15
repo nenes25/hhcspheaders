@@ -22,7 +22,7 @@
     },
     "scripts": {
         "header-stamp": [
-            "vendor/bin/header-stamp --extensions=php,js,css,tpl --exclude=.github,vendor,tests,translations"
+            "vendor/bin/header-stamp --extensions=php,js,css,tpl --exclude=.github,vendor,tests,translations --license=_dev/header-stamp/licence.txt"
         ],
         "cs-fixer": [
             "vendor/bin/php-cs-fixer fix --config tests/php/.php-cs-fixer.dist.php"
