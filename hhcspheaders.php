@@ -138,6 +138,7 @@ class Hhcspheaders extends Module
     public function hookActionControllerInitBefore(array $params): void
     {
         // CSP
+        //@Todo Gérer activation Front / Back
         if (Configuration::get($this->configPrefix . 'ENABLE')) {
             $cspHeader = $this->getCspHeaders();
             if (!empty($cspHeader)) {
@@ -548,7 +549,7 @@ class Hhcspheaders extends Module
      */
     protected function getCspReportUri(): string
     {
-        return $this->context->link->getBaseLink() . 'modules/' . $this->name . '/header-csp-report.php';
+        return $this->context->link->getModuleLink($this->name, 'report');
     }
 
     /**

@@ -16,10 +16,11 @@
  * @license   https://opensource.org/licenses/AFL-3.0  Academic Free License ("AFL") v. 3.0
  */
 
-require_once dirname(__FILE__) . '/../../config/config.inc.php';
-include dirname(__FILE__) . '/../../init.php';
-/** @var Hhcspheaders $module */
-$module = Module::getInstanceByName('hhcspheaders');
-if ($module) {
-    $module->logCspContent();
+class HhcspheadersReportModuleFrontController extends ModuleFrontController
+{
+    public function postProcess()
+    {
+        $this->module->logCspContent();
+        exit('OK');
+    }
 }
