@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * NOTICE OF LICENSE
  *
  * This source file is subject to the Academic Free License (AFL 3.0)
@@ -15,7 +14,6 @@
  * @copyright since 2022 Hervé HENNES
  * @license   https://opensource.org/licenses/AFL-3.0  Academic Free License ("AFL") v. 3.0
  */
-
 if (!defined('_PS_VERSION_')) {
     exit;
 }
@@ -44,7 +42,8 @@ class Hhcspheaders extends Module
      * @var string[]
      */
     protected $configFields = [
-        'ENABLE',
+        'ENABLE_FRONT',
+        'ENABLE_BACK',
         'MODE',
         'CSP_DEFAULT_SRC',
         'CSP_SCRIPT_SRC',
@@ -138,8 +137,16 @@ class Hhcspheaders extends Module
     public function hookActionControllerInitBefore(array $params): void
     {
         // CSP
-        //@Todo Gérer activation Front / Back
-        if (Configuration::get($this->configPrefix . 'ENABLE')) {
+        if (
+            (
+                Configuration::get($this->configPrefix . 'ENABLE_FRONT')
+                && $this->context->controller instanceof FrontController
+            )
+            || (
+                Configuration::get($this->configPrefix . 'ENABLE_BACK')
+                && $this->context->controller instanceof AdminController
+            )
+        ) {
             $cspHeader = $this->getCspHeaders();
             if (!empty($cspHeader)) {
                 if (Configuration::get($this->configPrefix . 'MODE') != self::CSP_MODE_REPORT_ONLY) {
@@ -207,12 +214,34 @@ class Hhcspheaders extends Module
                 'input' => [
                     [
                         'type' => 'switch',
-                        'label' => $this->l('Enable Csp headers'),
-                        'name' => $this->configPrefix . 'ENABLE',
+                        'label' => $this->l('Enable Csp headers on front office'),
+                        'name' => $this->configPrefix . 'ENABLE_FRONT',
                         'required' => true,
                         'class' => 't',
                         'is_bool' => true,
-                        'hint' => $this->l('Enable Csp headers'),
+                        'hint' => $this->l('Enable Csp headers on front office'),
+                        'values' => [
+                            [
+                                'id' => 'active_on',
+                                'value' => 1,
+                                'label' => $this->l('Enabled'),
+                            ],
+                            [
+                                'id' => 'active_off',
+                                'value' => 0,
+                                'label' => $this->l('Disabled'),
+                            ],
+                        ],
+                        'tab' => 'general',
+                    ],
+                    [
+                        'type' => 'switch',
+                        'label' => $this->l('Enable Csp headers on back office'),
+                        'name' => $this->configPrefix . 'ENABLE_BACK',
+                        'required' => true,
+                        'class' => 't',
+                        'is_bool' => true,
+                        'hint' => $this->l('Enable Csp headers on back office'),
                         'values' => [
                             [
                                 'id' => 'active_on',
