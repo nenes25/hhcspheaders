@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * NOTICE OF LICENSE
  *
  * This source file is subject to the Academic Free License (AFL 3.0)
@@ -15,7 +14,6 @@
  * @copyright since 2022 Hervé HENNES
  * @license   https://opensource.org/licenses/AFL-3.0  Academic Free License ("AFL") v. 3.0
  */
-
 if (!defined('_PS_VERSION_')) {
     exit;
 }
