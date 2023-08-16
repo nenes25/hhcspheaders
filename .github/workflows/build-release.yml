@@ -8,8 +8,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2.0.0
-      - name: Install composer dependencies
-        run: composer install --no-dev -o
       - name: Clean-up project
         uses: PrestaShopCorp/github-action-clean-before-deploy@v1.0
       - name: Prepare auto-index tool
@@ -40,15 +38,6 @@ jobs:
         run: |
           cd ${{ github.event.repository.name }}
           zip -r ${{ github.event.repository.name }}.zip ${{ github.event.repository.name }}
-      - name: Clean existing assets
-        shell: bash
-        run: |
-          curl -fsSL https://github.com/github/hub/raw/master/script/get | bash -s 2.14.1
-          assets=`bin/hub api -t repos/${{ github.repository }}/releases/${{ steps.release_info.outputs.id }}/assets | awk '/\].url/ { print $2 }'`
-          for asset in $assets
-          do
-              bin/hub api -X DELETE $asset
-          done
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish to GitHub Release
