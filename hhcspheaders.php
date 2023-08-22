@@ -64,7 +64,7 @@ class Hhcspheaders extends Module
     {
         $this->name = 'hhcspheaders';
         $this->tab = 'others';
-        $this->version = '0.3.0';
+        $this->version = '0.4.0';
         $this->author = 'hhennes';
         $this->bootstrap = true;
         parent::__construct();
@@ -657,7 +657,12 @@ class Hhcspheaders extends Module
      */
     protected function getCspLogFile(): string
     {
-        return _PS_MODULE_DIR_ . $this->name . '/logs/csp-errors.log';
+        $logDir = _PS_ROOT_DIR_.'/var/logs/'.$this->name;
+        $filesystem = new \Symfony\Component\Filesystem\Filesystem();
+        if ( !$filesystem->exists($logDir)){
+            $filesystem->mkdir($logDir);
+        }
+        return  $logDir.'csp-errors.log';
     }
 
     /**

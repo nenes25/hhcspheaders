@@ -1,6 +1,7 @@
-V 0.4.0 2023-      : - First public github version
+V 0.4.0 2023-08-22  : - First public github version
                      - #1 Allow to enable in FO but not in BO
                      - #2 Replace the report file by a prestashop controller
+                     - #3 Move logs in default var/log directory
 V 0.3.0 2023-07-06 : - Add other security headers options : X-Frame-Options,X-Content-Type-Options
 V 0.2.1 2023-07-05 : - Add a size limit to the log to avoid memory errors
                      - Add csp loger in prestashop module
