@@ -585,6 +585,8 @@ class Hhcspheaders extends Module
      * Get content of Csp log file or a warning message if it not exists
      *
      * @return string
+     *
+     * @throws PrestaShopException
      */
     protected function getLogContent(): string
     {
@@ -657,12 +659,13 @@ class Hhcspheaders extends Module
      */
     protected function getCspLogFile(): string
     {
-        $logDir = _PS_ROOT_DIR_.'/var/logs/'.$this->name;
+        $logDir = _PS_ROOT_DIR_ . '/var/logs/' . $this->name;
         $filesystem = new \Symfony\Component\Filesystem\Filesystem();
-        if ( !$filesystem->exists($logDir)){
+        if (!$filesystem->exists($logDir)) {
             $filesystem->mkdir($logDir);
         }
-        return  $logDir.'csp-errors.log';
+
+        return $logDir . 'csp-errors.log';
     }
 
     /**
@@ -673,6 +676,9 @@ class Hhcspheaders extends Module
      */
     protected function getPreviewContent(): string
     {
-        return '<div id="csp_preview" style="margin-top:10px;padding:10px;border:1px solid #CCC;background-color:#FFF6D3">' . $this->l('Generated csp will be displayed here') . '</div>';
+        return '<div id="csp_preview" 
+style="margin-top:10px;padding:10px;border:1px solid #CCC;background-color:#FFF6D3">'
+            . $this->l('Generated csp will be displayed here')
+            . '</div>';
     }
 }
