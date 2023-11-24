@@ -13,6 +13,41 @@ $testCasesConfiguration = [
         'HHCSPHEADERS_ENABLE_XCONTENT' => 1,
         'HHCSPHEADERS_ENABLE_XFRAME' => 1,
     ],
+    'REFERRER_DISABLE' => [
+        'HHCSPHEADERS_ENABLE_REFERRER' => 0,
+    ],
+    'REFERRER_NO_REFERRER' => [
+        'HHCSPHEADERS_ENABLE_REFERRER' => 1,
+        'HHCSPHEADERS_REFERRER_POLICY' => 'no-referrer',
+    ],
+    'REFERRER_NO_REFERRER_DOWNGRADE' => [
+        'HHCSPHEADERS_ENABLE_REFERRER' => 1,
+        'HHCSPHEADERS_REFERRER_POLICY' => 'no-referrer-when-downgrade',
+    ],
+    'REFERRER_ORIGIN' => [
+        'HHCSPHEADERS_ENABLE_REFERRER' => 1,
+        'HHCSPHEADERS_REFERRER_POLICY' => 'origin',
+    ],
+    'REFERRER_ORIGIN_CROSS' => [
+        'HHCSPHEADERS_ENABLE_REFERRER' => 1,
+        'HHCSPHEADERS_REFERRER_POLICY' => 'origin-when-cross-origin',
+    ],
+    'REFERRER_ORIGIN_SAME' => [
+        'HHCSPHEADERS_ENABLE_REFERRER' => 1,
+        'HHCSPHEADERS_REFERRER_POLICY' => 'same-origin',
+    ],
+    'REFERRER_ORIGIN_STRICT' => [
+        'HHCSPHEADERS_ENABLE_REFERRER' => 1,
+        'HHCSPHEADERS_REFERRER_POLICY' => 'strict-origin',
+    ],
+    'REFERRER_ORIGIN_STRICT_CROSS' => [
+        'HHCSPHEADERS_ENABLE_REFERRER' => 1,
+        'HHCSPHEADERS_REFERRER_POLICY' => 'strict-origin-when-cross-origin',
+    ],
+    'REFERRER_UNSAFE' => [
+        'HHCSPHEADERS_ENABLE_REFERRER' => 1,
+        'HHCSPHEADERS_REFERRER_POLICY' => 'unsafe-url',
+    ],
 ];
 
 // Get the case to run
