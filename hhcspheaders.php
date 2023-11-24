@@ -59,7 +59,7 @@ class Hhcspheaders extends Module
         'XFRAME_OPTION',
         'ENABLE_XCONTENT',
         'ENABLE_REFERRER',
-        'REFERRER_POLICY'
+        'REFERRER_POLICY',
     ];
 
     public function __construct()
@@ -172,7 +172,7 @@ class Hhcspheaders extends Module
 
         // REFERRER POLICY
         if (Configuration::get($this->configPrefix . 'ENABLE_REFERRER')) {
-            header('Referrer-Policy: '.Configuration::get($this->configPrefix . 'REFERRER_POLICY'));
+            header('Referrer-Policy: ' . Configuration::get($this->configPrefix . 'REFERRER_POLICY'));
         }
     }
 
