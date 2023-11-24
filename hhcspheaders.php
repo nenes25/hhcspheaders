@@ -58,6 +58,8 @@ class Hhcspheaders extends Module
         'ENABLE_XFRAME',
         'XFRAME_OPTION',
         'ENABLE_XCONTENT',
+        'ENABLE_REFERRER',
+        'REFERRER_POLICY'
     ];
 
     public function __construct()
@@ -166,6 +168,11 @@ class Hhcspheaders extends Module
         // X Content
         if (Configuration::get($this->configPrefix . 'ENABLE_XCONTENT')) {
             header('X-Content-Type-Options: nosniff');
+        }
+
+        // REFERRER POLICY
+        if (Configuration::get($this->configPrefix . 'ENABLE_REFERRER')) {
+            header('Referrer-Policy: '.Configuration::get($this->configPrefix . 'REFERRER_POLICY'));
         }
     }
 
@@ -447,6 +454,82 @@ class Hhcspheaders extends Module
                                 'id' => 'active_off',
                                 'value' => 0,
                                 'label' => $this->l('Disabled'),
+                            ],
+                        ],
+                        'tab' => 'others',
+                    ],
+                    [
+                        'type' => 'switch',
+                        'label' => $this->l('Enable Referrer-Policy'),
+                        'name' => $this->configPrefix . 'ENABLE_REFERRER',
+                        'required' => true,
+                        'class' => 't',
+                        'is_bool' => true,
+                        'hint' => sprintf(
+                            $this->l('Enable Referrer-Policy see %s for more details'),
+                            '<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy">
+                            ' . $this->l('here') . '</a>'
+                        ),
+                        'values' => [
+                            [
+                                'id' => 'active_on',
+                                'value' => 1,
+                                'label' => $this->l('Enabled'),
+                            ],
+                            [
+                                'id' => 'active_off',
+                                'value' => 0,
+                                'label' => $this->l('Disabled'),
+                            ],
+                        ],
+                        'tab' => 'others',
+                    ],
+                    [
+                        'type' => 'radio',
+                        'label' => $this->l('Referrer-Policy option value'),
+                        'name' => $this->configPrefix . 'REFERRER_POLICY',
+                        'required' => true,
+                        'class' => 't radio-select-csp-mode',
+                        'values' => [
+                            [
+                                'id' => 'no-referrer',
+                                'value' => 'no-referrer',
+                                'label' => 'no-referrer',
+                            ],
+                            [
+                                'id' => 'no-referrer-when-downgrade',
+                                'value' => 'no-referrer-when-downgrade',
+                                'label' => 'no-referrer-when-downgrade',
+                            ],
+                            [
+                                'id' => 'origin',
+                                'value' => 'origin',
+                                'label' => 'origin',
+                            ],
+                            [
+                                'id' => 'origin-when-cross-origin',
+                                'value' => 'origin-when-cross-origin',
+                                'label' => 'origin-when-cross-origin',
+                            ],
+                            [
+                                'id' => 'same-origin',
+                                'value' => 'same-origin',
+                                'label' => 'same-origin',
+                            ],
+                            [
+                                'id' => 'strict-origin',
+                                'value' => 'strict-origin',
+                                'label' => 'strict-origin',
+                            ],
+                            [
+                                'id' => 'strict-origin-when-cross-origin',
+                                'value' => 'strict-origin-when-cross-origin',
+                                'label' => 'strict-origin-when-cross-origin',
+                            ],
+                            [
+                                'id' => 'unsafe-url',
+                                'value' => 'unsafe-url',
+                                'label' => 'unsafe-url',
                             ],
                         ],
                         'tab' => 'others',

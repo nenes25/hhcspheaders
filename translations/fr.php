@@ -1,20 +1,4 @@
 <?php
-/**
- *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Academic Free License (AFL 3.0)
- * that is bundled with this package in the file docs/licenses/LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * https://opensource.org/licenses/afl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to contact@h-hennes.fr so we can send you a copy immediately.
- *
- * @author    Hervé HENNES <contact@h-hhennes.fr>
- * @copyright since 2022 Hervé HENNES
- * @license   https://opensource.org/licenses/AFL-3.0  Academic Free License ("AFL") v. 3.0
- */
 
 global $_MODULE;
 $_MODULE = array();
@@ -24,7 +8,6 @@ $_MODULE['<{hhcspheaders}prestashop>hhcspheaders_254f642527b45bc260048e30704edb3
 $_MODULE['<{hhcspheaders}prestashop>hhcspheaders_d2126da975d5b9a5b846efaf57d3fd53'] = 'Configuration générale';
 $_MODULE['<{hhcspheaders}prestashop>hhcspheaders_b2d37ae1cedf42ff874289b721860af2'] = 'Logs';
 $_MODULE['<{hhcspheaders}prestashop>hhcspheaders_73159ab263602e1bd5ba3d2c257e948a'] = 'Ajout des csp dans Prestashop voir %s pour les détails';
-$_MODULE['<{hhcspheaders}prestashop>hhcspheaders_934f92c9fede471559cbf522e1e543ef'] = 'Activer les entêtes CSP';
 $_MODULE['<{hhcspheaders}prestashop>hhcspheaders_00d23a76e43b46dae9ec7aa9dcbebb32'] = 'Activé';
 $_MODULE['<{hhcspheaders}prestashop>hhcspheaders_b9f5c797ebbf55adccdd8539a65a0241'] = 'Désactivé';
 $_MODULE['<{hhcspheaders}prestashop>hhcspheaders_731cc530f6e5ce1c009f73be980aa0a8'] = 'Mode Csp';
@@ -50,10 +33,13 @@ $_MODULE['<{hhcspheaders}prestashop>hhcspheaders_85839d55dc9011be71b4e503c09a7dc
 $_MODULE['<{hhcspheaders}prestashop>hhcspheaders_bcf213c134033a0756e27f6b907b426f'] = 'Défini les sources valides pour charger des iframes';
 $_MODULE['<{hhcspheaders}prestashop>hhcspheaders_f8d35b6a7fc5043b36408c96bca9540b'] = 'Prévisualiser les entêtes CSP générées';
 $_MODULE['<{hhcspheaders}prestashop>hhcspheaders_2f71dcb9b7d5276f57c3dc91c648146f'] = 'Contenu des logs';
+$_MODULE['<{hhcspheaders}prestashop>hhcspheaders_6c92285fa6d3e827b198d120ea3ac674'] = 'Ici';
+$_MODULE['<{hhcspheaders}prestashop>hhcspheaders_164197aaee8f154850deeacd5e7ba8d3'] = 'Activer les Referrer-Policy';
+$_MODULE['<{hhcspheaders}prestashop>hhcspheaders_c4dc54241f2602b82b3b79e02f63da06'] = 'Activer les Referrer-Policy voir %s pour plus de détails';
+$_MODULE['<{hhcspheaders}prestashop>hhcspheaders_2c28c92a52bf22b6f2ba3a0ae021ce72'] = 'Valeur Referrer-Policy';
 $_MODULE['<{hhcspheaders}prestashop>hhcspheaders_c9cc8cce247e49bae79f15173ce97354'] = 'Sauvegarder';
 $_MODULE['<{hhcspheaders}prestashop>hhcspheaders_c888438d14855d7d96a2724ee9c306bd'] = 'Paramètres mis à jour';
 $_MODULE['<{hhcspheaders}prestashop>hhcspheaders_a228648d790fae815d682b56bebc6164'] = 'Log supprimés avec succès';
 $_MODULE['<{hhcspheaders}prestashop>hhcspheaders_30ba208014f033c04370ee2283a65323'] = 'Impossible de supprimer le fichier de log';
 $_MODULE['<{hhcspheaders}prestashop>hhcspheaders_a6bb7e9882a2b76d9cf2b6228ea82b95'] = 'Pas de logs à afficher, le fichier %s n\'existe pas';
 $_MODULE['<{hhcspheaders}prestashop>hhcspheaders_c7ea238c84eee7251cd90ad408f2caaf'] = 'Voici le contenu du fichier %s , cliquer %s pour le supprimer';
-$_MODULE['<{hhcspheaders}prestashop>hhcspheaders_6c92285fa6d3e827b198d120ea3ac674'] = 'Ici';
