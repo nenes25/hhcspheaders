@@ -48,6 +48,23 @@ $testCasesConfiguration = [
         'HHCSPHEADERS_ENABLE_REFERRER' => 1,
         'HHCSPHEADERS_REFERRER_POLICY' => 'unsafe-url',
     ],
+    //CSP POLICIES
+    'DISABLE_ALL' => [],
+    'DISABLE_BO_ENABLE_FO'=> [],
+    'DISABLE_FO_ENABLE_BO'=> [],
+    'CSP_MODE_REPORT_ONLY' => [],
+    'CSP_MODE_BLOCK_ONLY' => [],
+    'CSP_MODE_BOTH' => [],
+    'CSP_DEFAULT_SRC_ONLY' => [],
+    'CSP_ALL' => [],
+    'CSP_SCRIPT_SRC' => [],
+    'CSP_STYLE_SRC' => [],
+    'CSP_IMG_SRC' => [],
+    'CSP_CONNECT_SRC' => [],
+    'CSP_FONT_SRC'=> [],
+    'CSP_OBJECT_SRC'=> [],
+    'CSP_MEDIA_SRC'=> [],
+    'CSP_FRAME_SRC'=>[],
 ];
 
 // Get the case to run
