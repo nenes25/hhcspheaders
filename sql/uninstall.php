@@ -14,14 +14,12 @@
  * @copyright since 2022 Hervé HENNES
  * @license   https://opensource.org/licenses/AFL-3.0  Academic Free License ("AFL") v. 3.0
  */
+$sql = [];
 
-require_once _PS_MODULE_DIR_ . 'hhcspheaders/classes/CspViolation.php';
+$sql[] = 'DROP TABLE IF EXISTS `' . _DB_PREFIX_ . 'hhcspheaders_violations`';
 
-class HhcspheadersReportModuleFrontController extends ModuleFrontController
-{
-    public function postProcess()
-    {
-        $this->module->logCspContent();
-        exit('OK');
+foreach ($sql as $query) {
+    if (Db::getInstance()->execute($query) == false) {
+        return false;
     }
 }
