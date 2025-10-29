@@ -1,9 +1,17 @@
 {
   "name": "functionnal",
   "version": "1.0.0",
-  "description": "",
+  "description": "Functional tests for hhcspheaders module",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:report": "playwright show-report",
+    "test:csp": "playwright test csp-headers.spec.ts",
+    "test:xframe": "playwright test xframe-xcontent.spec.ts",
+    "test:referrer": "playwright test referrer-policy.spec.ts"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
