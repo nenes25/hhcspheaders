@@ -66,7 +66,7 @@ class Hhcspheaders extends Module
     {
         $this->name = 'hhcspheaders';
         $this->tab = 'others';
-        $this->version = '0.4.0';
+        $this->version = '0.5.0';
         $this->author = 'hhennes';
         $this->bootstrap = true;
         parent::__construct();
@@ -83,6 +83,8 @@ class Hhcspheaders extends Module
      */
     public function install()
     {
+        include dirname(__FILE__) . '/sql/install.php';
+
         if (
             !parent::install()
             || !$this->registerHook(['actionControllerInitBefore', 'actionAdminControllerSetMedia'])
@@ -101,6 +103,8 @@ class Hhcspheaders extends Module
      */
     public function uninstall()
     {
+        include dirname(__FILE__) . '/sql/uninstall.php';
+
         foreach ($this->configFields as $config) {
             Configuration::deleteByName($this->configPrefix . $config);
         }
@@ -370,20 +374,17 @@ class Hhcspheaders extends Module
                         'tab' => 'general',
                     ],
                     [
-                        'type' => 'text',
-                        'label' => $this->l('Log max file size'),
-                        'hint' => sprintf(
-                            $this->l('Log max file size in Mb, (current size %s Mb)'),
-                            $this->getLogFileSize()
-                        ),
-                        'name' => $this->configPrefix . 'LOG_MAX_FILE_SIZE',
+                        'type' => 'html',
+                        'label' => $this->l('CSP Violations Statistics'),
+                        'name' => $this->configPrefix . 'VIOLATIONS_STATS',
+                        'html_content' => $this->getViolationsStats(),
                         'tab' => 'logs',
                     ],
                     [
                         'type' => 'html',
-                        'label' => $this->l('Log content'),
-                        'name' => $this->configPrefix . 'LOG_CONTENT',
-                        'html_content' => $this->getLogContent(),
+                        'label' => $this->l('Recent Violations'),
+                        'name' => $this->configPrefix . 'VIOLATIONS_LIST',
+                        'html_content' => $this->getRecentViolations(),
                         'tab' => 'logs',
                     ],
                     [
@@ -563,7 +564,7 @@ class Hhcspheaders extends Module
     }
 
     /**
-     * Process form submit or log file delete
+     * Process form submit or violations cleanup
      *
      * @return string|void
      */
@@ -577,11 +578,13 @@ class Hhcspheaders extends Module
             return $this->displayConfirmation($this->l('Settings updated'));
         }
 
-        if (Tools::getValue('delete_log_file')) {
-            if ($this->deleteLogFile()) {
-                return $this->displayConfirmation($this->l('Log file deleted with success'));
+        if (Tools::getValue('clear_violations')) {
+            require_once _PS_MODULE_DIR_ . 'hhcspheaders/classes/CspViolation.php';
+
+            if ($this->clearResolvedViolations()) {
+                return $this->displayConfirmation($this->l('Resolved violations cleared successfully'));
             } else {
-                return $this->displayError($this->l('Unable to delete log file'));
+                return $this->displayError($this->l('Unable to clear violations'));
             }
         }
     }
@@ -620,16 +623,25 @@ class Hhcspheaders extends Module
      */
     public function logCspContent(): void
     {
-        if ($this->getLogFileSize() > Configuration::get($this->configPrefix . 'LOG_MAX_FILE_SIZE')) {
-            $this->deleteLogFile();
-        }
+        require_once _PS_MODULE_DIR_ . 'hhcspheaders/classes/CspViolation.php';
+
         $data = file_get_contents('php://input');
         if ($data = json_decode($data, true)) {
-            file_put_contents(
-                $this->getCspLogFile(),
-                date('Y-m-d H:i:s') . ' ' . print_r($data['csp-report'], true) . "\n",
-                FILE_APPEND
-            );
+            if (isset($data['csp-report'])) {
+                $reportData = $data['csp-report'];
+
+                $documentUri = isset($reportData['document-uri']) ? $reportData['document-uri'] : '';
+                $blockedUri = isset($reportData['blocked-uri']) ? $reportData['blocked-uri'] : '';
+                $violatedDirective = isset($reportData['violated-directive']) ? $reportData['violated-directive'] : '';
+
+                $existingViolation = CspViolation::findExisting($documentUri, $blockedUri, $violatedDirective);
+
+                if ($existingViolation) {
+                    $existingViolation->incrementOccurrence();
+                } else {
+                    CspViolation::createFromReport($reportData);
+                }
+            }
         }
     }
 
@@ -665,46 +677,101 @@ class Hhcspheaders extends Module
     }
 
     /**
-     * Get content of Csp log file or a warning message if it not exists
+     * Get CSP violations statistics
      *
      * @return string
-     *
-     * @throws PrestaShopException
      */
-    protected function getLogContent(): string
+    protected function getViolationsStats(): string
     {
-        $logContent = sprintf(
-            $this->l('No logs to display the log file %s does not exists'),
-            '<i>' . $this->getCspLogFile() . '</i>'
-        );
+        require_once _PS_MODULE_DIR_ . 'hhcspheaders/classes/CspViolation.php';
 
-        if (is_file($this->getCspLogFile())) {
-            $logContent = '<p>' . sprintf(
-                $this->l('Here is the content of the file %s click %s to delete it'),
-                '<i>' . $this->getCspLogFile() . '</i>',
-                '<a href="' . $this->getDeleteLogFileLink() . '">' . $this->l('here') . '</a>'
-            )
-                . '</p>';
-            $logContent .= '<div style="max-height: 450px;overflow:scroll">';
-            $logContent .= nl2br(file_get_contents($this->getCspLogFile()));
-            $logContent .= '</div>';
+        $stats = CspViolation::getStatistics();
+
+        $html = '<div class="alert alert-info">';
+        $html .= '<h4>' . $this->l('CSP Violations Summary') . '</h4>';
+        $html .= '<ul>';
+        $html .= '<li><strong>' . $this->l('Total violations:') . '</strong> ' . (int) $stats['total'] . '</li>';
+        $html .= '<li><strong>' . $this->l('Unresolved violations:') . '</strong> ' . (int) $stats['unresolved'] . '</li>';
+        $html .= '<li><strong>' . $this->l('Total occurrences:') . '</strong> ' . (int) $stats['total_occurrences'] . '</li>';
+        if (!empty($stats['most_violated_directive'])) {
+            $html .= '<li><strong>' . $this->l('Most violated directive:') . '</strong> '
+                . htmlspecialchars($stats['most_violated_directive']) . '</li>';
         }
+        $html .= '</ul>';
+        $html .= '</div>';
 
-        return $logContent;
+        return $html;
     }
 
     /**
-     * Return current log filesize in mb
+     * Get recent CSP violations
      *
-     * @return float
+     * @return string
      */
-    protected function getLogFileSize(): float
+    protected function getRecentViolations(): string
     {
-        if (is_file($this->getCspLogFile())) {
-            return round(filesize($this->getCspLogFile()) / 1024 / 1024, 2);
+        require_once _PS_MODULE_DIR_ . 'hhcspheaders/classes/CspViolation.php';
+
+        $violations = CspViolation::getUnresolvedViolations(20);
+
+        if (empty($violations)) {
+            return '<div class="alert alert-success">' . $this->l('No violations detected yet.') . '</div>';
         }
 
-        return 0;
+        $clearLink = $this->context->link->getAdminLink('AdminModules', false)
+            . '&configure=' . $this->name . '&tab_module=' . $this->tab . '&module_name=' . $this->name
+            . '&token=' . Tools::getAdminTokenLite('AdminModules') . '&clear_violations=1';
+
+        $html = '<p class="alert alert-info">';
+        $html .= $this->l('Showing the 20 most recent unresolved violations.');
+        $html .= ' <a href="' . $clearLink . '" class="btn btn-sm btn-danger" onclick="return confirm(\''
+            . $this->l('Are you sure you want to clear all resolved violations?') . '\');">';
+        $html .= '<i class="icon-trash"></i> ' . $this->l('Clear Resolved Violations');
+        $html .= '</a>';
+        $html .= '</p>';
+
+        $html .= '<div style="max-height: 500px; overflow-y: auto;">';
+        $html .= '<table class="table table-bordered table-striped">';
+        $html .= '<thead>';
+        $html .= '<tr>';
+        $html .= '<th>' . $this->l('Directive') . '</th>';
+        $html .= '<th>' . $this->l('Blocked URI') . '</th>';
+        $html .= '<th>' . $this->l('Document URI') . '</th>';
+        $html .= '<th>' . $this->l('Occurrences') . '</th>';
+        $html .= '<th>' . $this->l('Last Seen') . '</th>';
+        $html .= '</tr>';
+        $html .= '</thead>';
+        $html .= '<tbody>';
+
+        foreach ($violations as $violation) {
+            $html .= '<tr>';
+            $html .= '<td><code>' . htmlspecialchars($violation['violated_directive']) . '</code></td>';
+            $html .= '<td style="word-break: break-all; max-width: 250px;">'
+                . htmlspecialchars($violation['blocked_uri']) . '</td>';
+            $html .= '<td style="word-break: break-all; max-width: 250px;">'
+                . htmlspecialchars($violation['document_uri']) . '</td>';
+            $html .= '<td><span class="badge badge-warning">' . (int) $violation['occurrences'] . '</span></td>';
+            $html .= '<td>' . htmlspecialchars($violation['last_seen']) . '</td>';
+            $html .= '</tr>';
+        }
+
+        $html .= '</tbody>';
+        $html .= '</table>';
+        $html .= '</div>';
+
+        return $html;
+    }
+
+    /**
+     * Clear all resolved violations from database
+     *
+     * @return bool
+     */
+    protected function clearResolvedViolations(): bool
+    {
+        $sql = 'DELETE FROM `' . _DB_PREFIX_ . 'hhcspheaders_violations` WHERE is_resolved = 1';
+
+        return Db::getInstance()->execute($sql);
     }
 
     /**
