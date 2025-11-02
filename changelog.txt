@@ -1,7 +1,7 @@
-V 0.5.0 2025-10-29  : - #9 Replace log file by database records
-                     - Store CSP violations in database instead of log files
-                     - Track violation occurrences and timestamps
-                     - Display violations statistics in module configuration
+V 0.5.0 2025-11-02  :
+                       - #9 Replace log file by database records
+                       - #8 Manage referer policies
+                       - #5 Add code coverage
 V 0.4.0 2023-08-22  : - First public github version
                      - #1 Allow to enable in FO but not in BO
                      - #2 Replace the report file by a prestashop controller
