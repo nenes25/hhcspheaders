@@ -43,3 +43,11 @@ $_MODULE['<{hhcspheaders}prestashop>hhcspheaders_a228648d790fae815d682b56bebc616
 $_MODULE['<{hhcspheaders}prestashop>hhcspheaders_30ba208014f033c04370ee2283a65323'] = 'Impossible de supprimer le fichier de log';
 $_MODULE['<{hhcspheaders}prestashop>hhcspheaders_a6bb7e9882a2b76d9cf2b6228ea82b95'] = 'Pas de logs à afficher, le fichier %s n\'existe pas';
 $_MODULE['<{hhcspheaders}prestashop>hhcspheaders_c7ea238c84eee7251cd90ad408f2caaf'] = 'Voici le contenu du fichier %s , cliquer %s pour le supprimer';
+$_MODULE['<{hhcspheaders}prestashop>hhcspheaders_f376e155c5b9bdea52904a90267b9974'] = 'Violation marquée comme résolue';
+$_MODULE['<{hhcspheaders}prestashop>hhcspheaders_a3665f3567cb6e978e5d0186b1729927'] = 'Impossible de marquer la violation comme résolue';
+$_MODULE['<{hhcspheaders}prestashop>hhcspheaders_d0cbb79672d8112520e0bd50898469db'] = 'Toutes les violations ont été marquées comme résolues';
+$_MODULE['<{hhcspheaders}prestashop>hhcspheaders_b24ff65742a6982ce15d26e88622a01a'] = 'Impossible de marquer les violations comme résolues';
+$_MODULE['<{hhcspheaders}prestashop>hhcspheaders_c3f7c87b177c60cd8952e4623d42a08a'] = 'Êtes-vous sûr de vouloir marquer toutes les violations comme résolues ?';
+$_MODULE['<{hhcspheaders}prestashop>hhcspheaders_2e3df5299cfb1e9a4b9cb1849930df16'] = 'Tout marquer comme résolu';
+$_MODULE['<{hhcspheaders}prestashop>hhcspheaders_418c5509e2171d55b0aee5c2ea4442b5'] = 'Action';
+$_MODULE['<{hhcspheaders}prestashop>hhcspheaders_785e254f4f43227df02945c04559dbaf'] = 'Résoudre';
