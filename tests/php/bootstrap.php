@@ -84,5 +84,34 @@ class Configuration
     }
 }
 
+class Db
+{
+    private static ?self $instance = null;
+
+    public static function getInstance(): self
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
+    public function execute(string $sql): bool
+    {
+        return true;
+    }
+
+    public function getValue($sql): mixed
+    {
+        return false;
+    }
+
+    public function executeS($sql): array
+    {
+        return [];
+    }
+}
+
 require_once dirname(__DIR__, 2) . '/hhcspheaders.php';
 require_once dirname(__DIR__, 2) . '/classes/CspViolation.php';

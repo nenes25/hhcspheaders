@@ -177,6 +177,33 @@ class CspViolation extends ObjectModel
     }
 
     /**
+     * Mark this violation as resolved
+     *
+     * @return bool
+     */
+    public function markAsResolved(): bool
+    {
+        $this->is_resolved = true;
+        $this->date_upd = date('Y-m-d H:i:s');
+
+        return $this->update();
+    }
+
+    /**
+     * Mark all unresolved violations as resolved
+     *
+     * @return bool
+     */
+    public static function markAllAsResolved(): bool
+    {
+        return Db::getInstance()->execute(
+            'UPDATE `' . _DB_PREFIX_ . 'hhcspheaders_violations`
+             SET `is_resolved` = 1, `date_upd` = NOW()
+             WHERE `is_resolved` = 0'
+        );
+    }
+
+    /**
      * Get violations statistics
      *
      * @return array

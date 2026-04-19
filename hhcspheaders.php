@@ -578,9 +578,27 @@ class Hhcspheaders extends Module
             return $this->displayConfirmation($this->l('Settings updated'));
         }
 
-        if (Tools::getValue('clear_violations')) {
-            require_once _PS_MODULE_DIR_ . 'hhcspheaders/classes/CspViolation.php';
+        require_once _PS_MODULE_DIR_ . 'hhcspheaders/classes/CspViolation.php';
 
+        if (Tools::getValue('resolve_violation')) {
+            $idViolation = (int) Tools::getValue('resolve_violation');
+            $violation = new CspViolation($idViolation);
+            if (Validate::isLoadedObject($violation) && $violation->markAsResolved()) {
+                return $this->displayConfirmation($this->l('Violation marked as resolved'));
+            } else {
+                return $this->displayError($this->l('Unable to mark violation as resolved'));
+            }
+        }
+
+        if (Tools::getValue('resolve_all_violations')) {
+            if (CspViolation::markAllAsResolved()) {
+                return $this->displayConfirmation($this->l('All violations marked as resolved'));
+            } else {
+                return $this->displayError($this->l('Unable to mark violations as resolved'));
+            }
+        }
+
+        if (Tools::getValue('clear_violations')) {
             if ($this->clearResolvedViolations()) {
                 return $this->displayConfirmation($this->l('Resolved violations cleared successfully'));
             } else {
@@ -718,12 +736,18 @@ class Hhcspheaders extends Module
             return '<div class="alert alert-success">' . $this->l('No violations detected yet.') . '</div>';
         }
 
-        $clearLink = $this->context->link->getAdminLink('AdminModules', false)
+        $baseLink = $this->context->link->getAdminLink('AdminModules', false)
             . '&configure=' . $this->name . '&tab_module=' . $this->tab . '&module_name=' . $this->name
-            . '&token=' . Tools::getAdminTokenLite('AdminModules') . '&clear_violations=1';
+            . '&token=' . Tools::getAdminTokenLite('AdminModules');
+        $clearLink = $baseLink . '&clear_violations=1';
+        $resolveAllLink = $baseLink . '&resolve_all_violations=1';
 
         $html = '<p class="alert alert-info">';
         $html .= $this->l('Showing the 20 most recent unresolved violations.');
+        $html .= ' <a href="' . $resolveAllLink . '" class="btn btn-sm btn-success" onclick="return confirm(\''
+            . $this->l('Are you sure you want to mark all violations as resolved?') . '\');">';
+        $html .= '<i class="icon-check"></i> ' . $this->l('Mark all as resolved');
+        $html .= '</a>';
         $html .= ' <a href="' . $clearLink . '" class="btn btn-sm btn-danger" onclick="return confirm(\''
             . $this->l('Are you sure you want to clear all resolved violations?') . '\');">';
         $html .= '<i class="icon-trash"></i> ' . $this->l('Clear Resolved Violations');
@@ -739,11 +763,13 @@ class Hhcspheaders extends Module
         $html .= '<th>' . $this->l('Document URI') . '</th>';
         $html .= '<th>' . $this->l('Occurrences') . '</th>';
         $html .= '<th>' . $this->l('Last Seen') . '</th>';
+        $html .= '<th>' . $this->l('Action') . '</th>';
         $html .= '</tr>';
         $html .= '</thead>';
         $html .= '<tbody>';
 
         foreach ($violations as $violation) {
+            $resolveLink = $baseLink . '&resolve_violation=' . (int) $violation['id_violation'];
             $html .= '<tr>';
             $html .= '<td><code>' . htmlspecialchars($violation['violated_directive']) . '</code></td>';
             $html .= '<td style="word-break: break-all; max-width: 250px;">'
@@ -752,6 +778,8 @@ class Hhcspheaders extends Module
                 . htmlspecialchars($violation['document_uri']) . '</td>';
             $html .= '<td><span class="badge badge-warning">' . (int) $violation['occurrences'] . '</span></td>';
             $html .= '<td>' . htmlspecialchars($violation['last_seen']) . '</td>';
+            $html .= '<td><a href="' . $resolveLink . '" class="btn btn-xs btn-success">'
+                . '<i class="icon-check"></i> ' . $this->l('Resolve') . '</a></td>';
             $html .= '</tr>';
         }
 

@@ -73,6 +73,9 @@ services:
       - ../tests/functionnal:/tests
     environment:
       - WEBSITE_URL=http://localhost:${PS_PORT:-8090}
+      - ADMIN_EMAIL=${ADMIN_EMAIL:-demo@prestashop.com}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-prestashop_demo}
+      - ADMIN_PATH=${ADMIN_PATH:-/admin}
       - CI=true
     profiles:
       - testing

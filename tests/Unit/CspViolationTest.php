@@ -145,4 +145,44 @@ class CspViolationTest extends TestCase
         $this->assertGreaterThanOrEqual($before, $violation->date_upd);
         $this->assertLessThanOrEqual($after, $violation->date_upd);
     }
+
+    public function testMarkAsResolvedSetsIsResolvedToTrue(): void
+    {
+        $violation = new CspViolation();
+        $violation->is_resolved = false;
+
+        $violation->markAsResolved();
+
+        $this->assertTrue($violation->is_resolved);
+    }
+
+    public function testMarkAsResolvedUpdatesDateUpd(): void
+    {
+        $violation = new CspViolation();
+        $violation->date_upd = '2020-01-01 00:00:00';
+
+        $before = date('Y-m-d H:i:s');
+        $violation->markAsResolved();
+        $after = date('Y-m-d H:i:s');
+
+        $this->assertGreaterThanOrEqual($before, $violation->date_upd);
+        $this->assertLessThanOrEqual($after, $violation->date_upd);
+    }
+
+    public function testMarkAsResolvedReturnsTrue(): void
+    {
+        $violation = new CspViolation();
+
+        $result = $violation->markAsResolved();
+
+        $this->assertTrue($result);
+    }
+
+    public function testMarkAllAsResolvedReturnsBool(): void
+    {
+        $result = CspViolation::markAllAsResolved();
+
+        $this->assertIsBool($result);
+        $this->assertTrue($result);
+    }
 }
