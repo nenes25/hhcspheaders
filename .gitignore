@@ -1,3 +1,4 @@
 vendor/*
 logs/*.log
 tests/php/.php-cs-fixer.cache
+tests/php/.phpunit.result.cache
