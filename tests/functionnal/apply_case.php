@@ -1,8 +1,6 @@
 <?php
 
-//Change here  the path with the absolute path of the config file of your testing instance
-require_once '/home/herve/www/prestashop/tests/810/config/config.inc.php';
-//Eof config path
+require_once __DIR__ . '/../../../../config/config.inc.php';
 
 $testCasesConfiguration = [
     // X-Content - Xframes Tags
