@@ -1,3 +1,9 @@
+V 0.6.0 2026-05-18  :
+                       - Add PrestaShop 9 compatibility
+                       - #14 Fix is_resolved never updated for CSP violations
+                       - Add Docker dev environment
+                       - Add PHPUnit unit tests
+                       - Fix security vulnerabilities in dev dependencies (phpunit CVE-2026-24765, symfony/process CVE-2024-51736 & CVE-2026-24739)
 V 0.5.0 2025-11-02  :
                        - #9 Replace log file by database records
                        - #8 Manage referer policies

@@ -66,9 +66,10 @@ class Hhcspheaders extends Module
     {
         $this->name = 'hhcspheaders';
         $this->tab = 'others';
-        $this->version = '0.5.0';
+        $this->version = '0.6.0';
         $this->author = 'hhennes';
         $this->bootstrap = true;
+        $this->ps_versions_compliancy = ['min' => '8.0.0', 'max' => '9.99.99.99'];
         parent::__construct();
 
         $this->displayName = $this->l('Hh csp headers');
