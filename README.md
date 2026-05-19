@@ -28,6 +28,7 @@ Compatibility
 | Prestashop Version | Compatible                                                          |
 |--------------------|---------------------------------------------------------------------|
 | 1.7.4.x and under  | :x: Not officially compatible but fix are only linked to php syntax and missing hook actionControllerInitBefore |
-| 1.7.5.x to 1.7.8.x | :heavy_check_mark: only with php 7.2 +                              |
+| 1.7.5.x to 1.7.8.x | :heavy_check_mark: only with php 7.2 +  until version 0.4.0         |
 | 8.0.x              | :heavy_check_mark:                                                  |
 | 8.1.x              | :heavy_check_mark:                                                  |
+| 9.x.x              | :heavy_check_mark:                                                  |
